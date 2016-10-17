@@ -1,0 +1,23 @@
+INFO	?	main	2016-09-26T02:26:23.797Z	org.javacs.Main#connectToNode	Connected to parent using socket on port 55282
+SEVERE	?	main	2016-09-26T02:26:23.991Z	org.javacs.Main$4#onError	null
+java.lang.NullPointerException
+	at sun.nio.fs.UnixPath.normalizeAndCheck(UnixPath.java:77)
+	at sun.nio.fs.UnixPath.<init>(UnixPath.java:71)
+	at sun.nio.fs.UnixFileSystem.getPath(UnixFileSystem.java:281)
+	at java.nio.file.Paths.get(Paths.java:84)
+	at org.javacs.JavaLanguageServer.initialize(JavaLanguageServer.java:67)
+	at io.typefox.lsapi.services.transport.server.LanguageServerEndpoint._doAccept(LanguageServerEndpoint.xtend:123)
+	at io.typefox.lsapi.services.transport.server.LanguageServerEndpoint.doAccept(LanguageServerEndpoint.xtend:117)
+	at io.typefox.lsapi.services.transport.server.LanguageServerEndpoint.accept(LanguageServerEndpoint.xtend:114)
+	at io.typefox.lsapi.services.transport.server.LanguageServerEndpoint.accept(LanguageServerEndpoint.xtend)
+	at io.typefox.lsapi.services.transport.AbstractLanguageEndpoint.handleMessage(LanguageEndpoint.xtend:67)
+	at io.typefox.lsapi.services.transport.AbstractLanguageEndpoint.lambda$connect$4(LanguageEndpoint.xtend:61)
+	at io.typefox.lsapi.services.json.StreamMessageReader$1.apply(StreamMessageReader.java:46)
+	at io.typefox.lsapi.services.json.StreamMessageReader$1.apply(StreamMessageReader.java:44)
+	at io.typefox.lsapi.services.json.StreamMessageReader.handleMessage(StreamMessageReader.xtend:128)
+	at io.typefox.lsapi.services.json.StreamMessageReader.listen(StreamMessageReader.xtend:61)
+	at io.typefox.lsapi.services.transport.AbstractLanguageEndpoint.connect(LanguageEndpoint.xtend:60)
+	at org.javacs.Main.run(Main.java:150)
+	at org.javacs.Main.main(Main.java:69)
+
+INFO	?	main	2016-09-26T02:26:36.039Z	org.javacs.Main#run	Connection closed
