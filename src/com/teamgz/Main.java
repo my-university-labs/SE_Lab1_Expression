@@ -31,7 +31,12 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
 public class Main {
-    private static String expression =""; // save the input, when input a command, deal it
+    private static String expression = ""; // save the input, when input a command, deal it
+    
+    private void Method() {
+    	
+    }
+    
     public static void main(String[] args) {
         System.out.println(" Welcome!");
         printHelpDoc();
@@ -61,7 +66,9 @@ public class Main {
                                 break;
                             }
                             String result = simplify(expression, ip.getCommandsContent());
-                            if (result != null) System.out.println(" " + result);
+                            if (result != null) {
+                            	System.out.println(" " + result);
+                            }
                             break;
                         default: // derivative
                             if (expression.length() == 0) {
@@ -69,8 +76,9 @@ public class Main {
                                 break;
                             }
                             String tmp = derivative(expression, cmd.charAt(cmd.length() - 1));
-                            if (tmp != null)
+                            if (tmp != null) {
                                 System.out.println(tmp);
+                            }
                     }
                 } else { // is expression
                     System.out.println(" Error! A Bad Command.");
@@ -79,8 +87,9 @@ public class Main {
                 if (ip.isLegalExpression()) { //judge legal or not, i do not write this func, always return true now
                     System.out.println(" " + input);
                     expression = expression(input);
-                } else
+                } else {
                     System.out.println(" Error! A Bad Expression.");
+                }
             }
 
         }
@@ -103,7 +112,9 @@ public class Main {
                     exp_tmp = exp_tmp.replaceAll(entry.getKey(), value);
                     Pattern divideZreo = Pattern.compile("/[ ]*0[^.|]+|/[ ]*0$|/[ ]*0\\.0$|/[ ]*0\\.0[^\\d]");
                     Matcher legal1 = divideZreo.matcher(exp_tmp);
-                    if (legal1.find()) return " Can not divide zero. Error, Please check";
+                    if (legal1.find()) {
+                    	return " Can not divide zero. Error, Please check";
+                    }
                 }
             }
 
@@ -115,11 +126,12 @@ public class Main {
     public static String derivative(String exp_tmp, char X) {
         exp_tmp = simplify(exp_tmp, new HashMap<>()); // simplify first
         exp_tmp = exp_tmp.replaceAll("\\+-", "-"); // "+-" will cause false
-        if(exp_tmp.replaceAll("-?\\d\\.?\\d*", "").equals("")) return "0";
-        if (!exp_tmp.contains(String.valueOf(X))){ // there is not X
-            return "0";
+        if (exp_tmp.replaceAll("-?\\d\\.?\\d*", "").equals("")) {
+        	return "0";
         }
-        else {
+        if (!exp_tmp.contains(String.valueOf(X))) { // there is not X
+            return "0";
+        } else {
             exp_tmp = (new Expression(exp_tmp, X)).getExpression();
         }
         return exp_tmp;
@@ -139,7 +151,7 @@ public class Main {
     }
 }
 
-/**
+/*
  * input the expression string and format it
  * judge legal or not // not write
  * remove the parentheses
@@ -151,8 +163,8 @@ class InputParser {
     private boolean legal_cmd = false;
     private boolean legal_exp = true;
     private Map<String, Double> cmds = new HashMap<>();
-    private Pattern divideZreo = Pattern.compile("/[ ]*0[^.|]+|/[ ]*0$|/[ ]*0\\.0$|/[ ]*0\\.0[^\\d]");
-    private Pattern legalCommand = Pattern.compile("^!\\s?(simplify|d/d[a-zA-Z]|q|help)+(\\s?[a-zA-Z]\\s?=\\s?\\d\\s?)*"); // judge the command
+    private Pattern divideZreo = Pattern.compile("/[ ]*0[^.|]+|/[ ]*0$|/[ ]*0\\.0+$|/[ ]*0\\.0+[^\\d]");
+    private Pattern legalCommand = Pattern.compile("^!\\s?(simplify|d/d[a-zA-Z]$|q$|help$)(\\s?[a-zA-Z]\\s?=\\s?\\d\\s?)*"); // judge the command
     private Pattern legalExpression = Pattern.compile("[^/+*a-zA-Z0-9.^-]");
     private Pattern whatCommand = Pattern.compile("(simplify|d/d[a-zA-Z]|q|help)");
     private Pattern cmdsContent = Pattern.compile("[a-zA-Z]\\s?=\\s?\\d");
@@ -163,12 +175,24 @@ class InputParser {
         toUseParser(input);
         legalExpression(input);
     }
-    boolean isCommand() { return is_cmd; }
-    boolean isLegalCommand() { return legal_cmd; }
-    boolean isLegalExpression() { return legal_exp; }
-    String getExpressionAfterParser() { return expression; }
-    String getCommand() { return command; }
-    Map<String, Double> getCommandsContent() { return cmds; }
+    boolean isCommand() { 
+    	return is_cmd; 
+    }
+    boolean isLegalCommand() { 
+    	return legal_cmd; 
+    }
+    boolean isLegalExpression() { 
+    	return legal_exp; 
+    }
+    String getExpressionAfterParser() { 
+    	return expression; 
+    }
+    String getCommand() { 
+    	return command; 
+    }
+    Map<String, Double> getCommandsContent() { 
+    	return cmds; 
+    }
     private void toUseParser(String input) {
         if (input.charAt(0) == '!') { // is command
             is_cmd = true;
@@ -179,13 +203,16 @@ class InputParser {
             if (legal_cmd) { //if legal
                 Matcher which_cmd = whatCommand.matcher(input);
                 Matcher  contents = cmdsContent.matcher(input);
-                if (which_cmd.find()) command = which_cmd.group(); // find command
+                if (which_cmd.find()) {
+                	command = which_cmd.group(); // find command
+                }
                 while (contents.find()) { // find the contents in this command
                     String content = contents.group();
                     Matcher unknown = findUnknown.matcher(content);
                     Matcher  number = findNumber.matcher(content);
-                    if (unknown.find() && number.find()) // put all the contents in the map
+                    if (unknown.find() && number.find()) { // put all the contents in the map
                         cmds.put(unknown.group(), Double.parseDouble(number.group()));
+                    }
                 }
             }
         } else { // is expression
@@ -203,11 +230,13 @@ class InputParser {
         Matcher legal2 = legalExpression.matcher(input);
         legal_exp = !legal2.find();
     }
-    private String removeParentheses(String input) {return input;} // not write
+    private String removeParentheses(String input) {
+    	return input;
+    } // not write
 
 }
 
-/**
+/*
  * a class deal exp string
  * input exp and a char X
  * when just simplify X should be '#'
@@ -218,41 +247,48 @@ class Expression {
     private Pattern matchNumber = Pattern.compile("^-?\\d+\\.?\\d*");
     private String[] elements;
     private Map<String, Double> map = new HashMap<>();
-    Expression(String exp, char X) {
+    Expression(String exp, char x) {
         exp = exp.replaceAll("-", "+-");
-        if (exp.charAt(0) == '+')
+        if (exp.charAt(0) == '+') {
             exp = exp.substring(1, exp.length());
+        }
         elements = exp.split("\\+");
-        this.X = X;
+        this.X = x;
         formatExp();
     }
     String getExpression() { // return the expression after simplify
         String expression = "";
-        if (map.containsKey("numbers") && map.get("numbers") != 0)
+        if (map.containsKey("numbers") && map.get("numbers") != 0) {
             expression += map.get("numbers");
+        }
         for (Map.Entry<String, Double> entry : map.entrySet()) {
             if (!entry.getKey().equals("numbers") && entry.getValue() != 0) {
-                if (!expression.equals("") && entry.getKey().charAt(0) != '-')
+                if (!expression.equals("") && entry.getKey().charAt(0) != '-') {
                     expression += '+';
-                if (entry.getValue() != 1 && entry.getKey().charAt(0) != '/')
+                }
+                if (entry.getValue() != 1 && entry.getKey().charAt(0) != '/') {
                     expression += entry.getValue() + "*" + entry.getKey();
-                else if (entry.getValue() != 1)
+                } else if (entry.getValue() != 1) {
                     expression += entry.getValue() + entry.getKey();
-                else if (entry.getValue() == 1 && entry.getKey().charAt(0) == '/')
+                } else if (entry.getValue() == 1 && entry.getKey().charAt(0) == '/') {
                     expression += "1" + entry.getKey();
-                else
+                } else {
                     expression += entry.getKey();
+                }
             }
         }
         String tmp = expression.replaceAll("\\+-", "-");
-        if (tmp.trim().equals("")) tmp = "0";
+        if (tmp.trim().equals("")) {
+        	tmp = "0"; 
+        }
         return tmp;
     }
     private void formatExp() { // format the input
         for (String ele : elements) { // for every "-x*y/z^n"
             String s = (new Element(ele, X)).getElement();
-
-            if (s.equals("0")) continue;
+            if (s.equals("0")) {
+            	continue;
+            }
             double value = 1;
             try { //find number
 
@@ -261,25 +297,23 @@ class Expression {
                     value = Double.parseDouble(number.group());
 
                     s = s.replaceAll(number.group(), "");
-                }
-                else if (s.length() > 0 && s.charAt(0) == '-') {
+                } else if (s.length() > 0 && s.charAt(0) == '-') {
                     value = -1;
                     s = s.substring(1, s.length());
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println("FindNumberError " + e);
             }
             if (s.length() != 0) { // have unknown
-                if (s.charAt(0) == '*')
+                if (s.charAt(0) == '*') {
                     s = s.substring(1, s.length());
+                }
                 if (map.containsKey(s)) {
                     map.put(s, map.get(s) + value);
-                }
-                else {
+                } else {
                     map.put(s, value);
                 }
-            }
-            else { // just number
+            } else { // just number
                 if (map.containsKey("numbers")) {
 
                     map.put("numbers", map.get("numbers") + value);
@@ -301,15 +335,16 @@ class Element {
     private Pattern matchUnknown = Pattern.compile("[a-zA-Z]+");
     private Pattern matchXForMutil = Pattern.compile("[a-zA-Z]");
     private Pattern matchXForDivide = Pattern.compile("/[a-zA-Z]");
-    private Pattern matchXPowerForMutil = Pattern.compile("[a-zA-Z]+\\^\\d+");
-    private Pattern matchXPowerForDivide = Pattern.compile("/[a-zA-Z]+\\^\\d+");
+    private Pattern matchXPowerForMutil = Pattern.compile("[a-zA-Z]\\^\\d+");
+    private Pattern matchXPowerForDivide = Pattern.compile("/[a-zA-Z]\\^\\d+");
     private Map<Character, Integer> multi_map = new HashMap<>();
     private Map<Character, Integer> divide_map = new HashMap<>();
 
     Element(String str, char X) {
         try {
-            if (str.charAt(0) == '-')
+            if (str.charAt(0) == '-') {
                 this.negative = true;
+            }
             formatElement(str);
             formatMap();
             toDerivative(X);
@@ -319,40 +354,53 @@ class Element {
     }
     String getElement() {
 
-        if (nums == 0) return "0";
+        if (nums == 0) {
+        	return "0";
+        }
         String result = "";
-        if (negative) result = "-";
+        if (negative) {
+        	result = "-";
+        }
 
         if (multi_map.size() == 0 && divide_map.size() == 0) { // there is not any known var
             result += nums;
         } else { // there are some vars
             if (nums != 1) { // need add nums
                 result += nums;
-                if (multi_map.size() != 0)
+                if (multi_map.size() != 0) {
                     result += '*';
-                else
+                } else {
                     result += '/';
+                }
             }
             for (Map.Entry<Character, Integer> entry : multi_map.entrySet()) {
-                if (entry.getValue() > 0)
+                if (entry.getValue() > 0) {
                     result += entry.getKey();
-                if (entry.getValue() > 1)
+                }
+                if (entry.getValue() > 1) {
                     result +=  "^" + entry.getValue();
-                if (entry.getValue() > 0)
+                }
+                if (entry.getValue() > 0) {
                     result += '*';
+                }
             }
-            if (multi_map.size() != 0 && result.length() != 0)
+            
+            if (multi_map.size() != 0 && result.length() != 0) {
                 result = result.substring(0, result.length() - 1);
+            }
+            if(multi_map.size() == 0 && nums != 1) {
+            	result = result.substring(0, result.length() - 1);
+            }
             for (Map.Entry<Character, Integer> entry : divide_map.entrySet()) {
-                if (multi_map.size() != 0 || result.equals("") || result.equals("-"))
-                    result += '/';
-                if (entry.getValue() > 0)
+                result += '/';
+                if (entry.getValue() > 0) {
                     result += entry.getKey();
-                if (entry.getValue() > 1)
+                }
+                if (entry.getValue() > 1) {
                     result += "^" + entry.getValue();
+                }
             }
         }
-
         return result;
     }
     private void toDerivative(char X) {
@@ -366,8 +414,7 @@ class Element {
                 negative = !negative;
                 divide_map.put(X, divide_map.get(X) + 1);
             }
-            if (!multi_map.containsKey(X) &&
-                    !divide_map.containsKey(X)) {
+            if (!multi_map.containsKey(X) && !divide_map.containsKey(X)) {
                 multi_map.clear();
                 divide_map.clear();
                 nums = 0;
@@ -382,7 +429,7 @@ class Element {
                 String re = putIntoMap(divide_map, power_for_divide.group(), "powerdevide");
                 str = str.replaceAll(re, "");
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Error1 " + e);
         }
         // deal x^n
@@ -439,7 +486,7 @@ class Element {
                 this.nums *= Double.parseDouble(numbers.group());
             }
         } catch (Exception e) {
-            System.out.println("Error6 " + e );
+            System.out.println("Error6 " + e);
         }
         // deal /x
         try {
@@ -470,20 +517,23 @@ class Element {
             X = find_unknown.group().charAt(0);
         }
         int times = 1;
-        if (!type.equals("divide") && !type.equals("mutil"))
+        if (!type.equals("divide") && !type.equals("mutil")) {
             while (find_number.find()) {
                 times = Integer.parseInt(find_number.group());
-        } else
+            } 
+        } else {
             times = 1;
+        }
 
-        if (map.containsKey(X))
+        if (map.containsKey(X)) {
             map.put(X, map.get(X) + times);
-        else
+        } else {
             map.put(X, times);
+        }
         String result = "";
         switch (type) {
             case "powerdevide":
-                result = "/" + X + "\\" +"^" + times;
+                result = "/" + X + "\\" + "^" + times;
                 break;
             case "powermulti":
                 result = X + "\\" + "^" + times;
@@ -494,6 +544,8 @@ class Element {
             case "multi":
                 result += X;
                 break;
+            default:
+            	//;
         }
         return result;
     }
