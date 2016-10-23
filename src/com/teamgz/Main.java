@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
 public class Main {
-    private static String expression =""; // save the input, when input a command, deal it
+    private static String expression = ""; // save the input, when input a command, deal it
     public static void main(String[] args) {
         System.out.println(" Welcome!");
         printHelpDoc();
