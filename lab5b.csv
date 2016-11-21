@@ -1,0 +1,26 @@
+测试用例编号,输入字符串,期望输出字符串,所覆盖的等价类编号
+1,3*x/y*10,3*x/y*10,1 3 5 7 9
+,,,
+,,,
+,,,
+,!simplify,30.0*x/y,1 3 5 7 9
+,,,
+,,,
+,,,
+,!simplify x=2,60.0/y,11 13 15
+,,,
+,,,
+,,,
+,!simplify x=2 y=4,15,1 3 5 7 9
+,!simplify x=2 y=4 z=2,null,16
+,!simplify y=0,"Can not divide zero. Error, Please check",14
+2,3x-3x+x^3,x^3,5 17 19
+,!simplify,,
+3,3*(-3) + 3,3,4 6
+4,@9,9,8
+5,xxy,x^2*y,10
+,!simlpify,,
+6,3+*9,12,18
+,!simplify,,
+7,3^4.5,405,20
+8,x/0,Infinity*x,2
