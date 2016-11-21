@@ -32,14 +32,13 @@ import java.util.HashMap;
 import java.util.Scanner;
 public class Main {
     private static String expression = ""; // save the input, when input a command, deal it
-<<<<<<< HEAD
-=======
+
     
     private void Method() {
     	
     }
     
->>>>>>> 03bfa628e4ca83c4a2ea447e6c86f399c5eae05b
+
     public static void main(String[] args) {
         System.out.println(" Welcome!");
         printHelpDoc();
